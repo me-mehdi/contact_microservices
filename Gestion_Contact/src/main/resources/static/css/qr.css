@@ -1,0 +1,30 @@
+/* Styles for the h1 tag */
+h1 {
+  font-size: 36px;
+  text-align: center;
+  margin-top: 50px;
+}
+
+/* Styles for the body tag */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f2f2f2;
+}
+
+/* Styles for the container div */
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Styles for the link tag */
+a {
+  color: #337ab7;
+  text-decoration: none;
+}
+
+/* Styles for the hover state of the link tag */
+a:hover {
+  text-decoration: underline;
+}

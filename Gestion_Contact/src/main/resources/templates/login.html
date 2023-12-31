@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>	
+	<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+	<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+	<!------ Include the above in your HEAD tag ---------->
+	<link rel="stylesheet" href="css/login.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Login</title>
+</head>
+<body>
+	<h2>Simplify Your Connections, Share Your Location</h2>
+	<br>
+<div class="container" id="container">
+	<div class="form-container sign-up-container">
+		<form th:action="@{/register}" method="post" th:object="${newUser}">
+			<h2>Create Account</h2>
+			
+				<input type="text" id="login" class="fadeIn second" field="*{fName}" name="fName" placeholder="First Name">
+		      <input type="text" id="login" class="fadeIn second" field="*{lName}" name="lName" placeholder="Last Name">
+		      <input type="text" id="login" class="fadeIn second" field="*{username}" name="username" placeholder="Username">
+		      <input type="email" id="login" class="fadeIn second" field="*{email}" name="email" placeholder="Email">
+		      <input type="password" id="login" class="fadeIn third" field="*{password}" name="password" placeholder="Password">
+		      <input type="tel" id="login" class="fadeIn second" field="*{phone}" name="phone" placeholder="Phone">
+		      <input type="text" id="login" class="fadeIn second" field="*{address}" name="address" placeholder="Address">
+		      <button type="submit"  style="background-color:brown ; color:silver ;" class="fadeIn fourth" >Sign Up</button>
+			
+		    </form>
+		    </div>
+	<div class="form-container sign-in-container">
+		<form th:action="@{/login}" method="POST">
+			<h1>Sign in</h1>
+			<br> <br> 
+			<input type="text" class="fadeIn second" name="username" placeholder="Email" />
+			<input type="password" class="fadeIn third" name="password" placeholder="Password" />
+			<a href="#">Forgot your password?</a>
+			<button type="submit"  style="background-color:brown ; color:silver ;" class="fadeIn fourth" value="Log In">Sign In</button>
+		</form>
+	</div>
+	<div class="overlay-container">
+		<div class="overlay" style="background: linear-gradient(to right,brown , brown);">
+			<div class="overlay-panel overlay-left">
+				<h1>Welcome Back!</h1>
+				<p>
+					with our app Easy to manage a large number of users and trackers, and to track individuals in a real-time way on Google map
+				</p>
+				<button class="ghost" style="background-color: silver; color: brown;"  id="signIn">Sign In</button>
+			</div>
+			<div class="overlay-panel overlay-right">
+				<h1>HyperFind!</h1>
+				<p>
+					Join Us ,Let's Get Started 
+				</p>
+				<button class="ghost" style="background-color: silver; color: brown;" id="signUp">Sign Up</button>
+			</div>
+		</div>
+	</div>
+</div>
+	<script type="text/javascript">
+		const signUpButton = document.getElementById('signUp');
+		const signInButton = document.getElementById('signIn');
+		const container = document.getElementById('container');
+		
+		signUpButton.addEventListener('click', () => {
+			container.classList.add("right-panel-active");
+		});
+		
+		signInButton.addEventListener('click', () => {
+			container.classList.remove("right-panel-active");
+		});
+	</script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>	
+	<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+	<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<!------ Include the above in your HEAD tag ---------->
+	<link rel="stylesheet" href="css/register.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Register</title>
+</head>
+<body>
+
+	<div class="wrapper fadeInDown">
+	  <div id="formContent">	    
+	    <div class="container" align="center">
+			<div class="card2" >
+				<div class="card-body" style="color: #007b5e;">
+					<h2 class="card-title" id="res"><b>Contact Plus Registration</b></h2>				
+				</div>
+			</div>
+		</div>
+	
+	    <!-- Login Form -->
+	    <form th:action="@{/register}" method="post" th:object="${newUser}">
+	      <input type="text" id="login" class="fadeIn second" th:field="*{fName}" name="fName" placeholder="First Name">
+	      <input type="text" id="login" class="fadeIn second" th:field="*{lName}" name="lName" placeholder="Last Name">
+	      <input type="text" id="login" class="fadeIn second" th:field="*{username}" name="username" placeholder="Username">
+	      <input type="email" id="login" class="fadeIn second" th:field="*{email}" name="email" placeholder="Email">
+	      <input type="password" id="login" class="fadeIn third" th:field="*{password}" name="password" placeholder="Password">
+	      <input type="tel" id="login" class="fadeIn second" th:field="*{phone}" name="phone" placeholder="Phone">
+	      <input type="text" id="login" class="fadeIn second" th:field="*{address}" name="address" placeholder="Address">
+	      <input type="submit" class="fadeIn fourth" value="Register">
+	    </form>
+	
+	    <!-- Remind Passowrd -->
+	    <div id="formFooter">
+	      <a class="underlineHover" th:href="@{/login}">Back to login</a>
+	    </div>
+	
+	  </div>
+	</div>
+
+</body>
+</html>

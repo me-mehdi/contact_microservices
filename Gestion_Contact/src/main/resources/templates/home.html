@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<link rel="stylesheet" href="css/home.css">
+	<link rel="stylesheet" href="css/footer2.css">
+	<meta charset="ISO-8859-1">
+	<title>Home</title>
+
+	<title>Home</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+	<link href="https://netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+</head>
+<br style="background-color: #ececec;">
+	<nav class="navbar navbar-static-top navbar-inverse bg-inverse  navbar-fixed-top" style="background-color: black;">
+		<div class="navbar-header">
+			<button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".navbarSupportedContent">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+		</div>
+		<div class="collapse navbar-collapse navbarSupportedContent">
+			<ul class="nav navbar-nav">
+				<li class="navbar-form">
+					<form th:action="@{/search}" method="get" class="form-inline my-2 my-lg-0">
+						<input type="text" style="background-color: white;" name="param" placeholder="Search people" class="form-control mr-sm-2">
+						<button type="submit" class="btn btn-default"  style="background-color: silver;">Search</button>
+					</form>
+				</li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+    <li class="nav-item">
+        <a class="nav-link" th:href="@{/fav}" style="font-size: 16px;">Favourite</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" th:href="@{/addContact}" style="font-size: 16px;">Add Contact</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" th:href="@{/home}" style="font-size: 16px;">All Contacts</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" th:href="@{/profile}" style="font-size: 16px;">My Profile</a>
+    </li>
+	<li class="nav-item">
+		<a class="nav-link" th:href="@{'http://localhost:8082/?userId=' + ${id}}" style="font-size: 16px;">Calendrier</a>
+	</li>
+    <li class="nav-item">
+        <a class="nav-link" th:href="@{/logout}" style="font-size: 16px;">Logout</a>
+    </li>
+</ul>
+
+		</div>
+	</nav>
+	<br> </br>
+	<div class="col-md-12">
+		<br>
+		<div class="row">
+			<div class="col-md-6">
+				<h3 style="color: black;">All Contacts</h3>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-12 col-sm-8 col-lg-6">
+					<!-- Section Heading-->
+					<div class="section_heading text-center wow fadeInUp" data-wow-delay="0.2s" style="visibility: visible; animation-delay: 0.2s; animation-name: fadeInUp;">
+						<div class="line"></div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<!-- Single Advisor-->
+				<div class="col-12 col-sm-6 col-lg-3" th:each="contact: ${allContacts}">
+					<div class="single_advisor_profile wow fadeInUp" data-wow-delay="0.2s" style="visibility: visible; animation-delay: 0.2s; animation-name: fadeInUp;">
+						<!-- Team Thumb-->
+						<div class="advisor_thumb">
+							<img th:src="@{'data:image/jpg;base64,' + ${contact.image}}" alt="..." style="height: 209px;">
+							<!-- Social Info-->
+							<div class="social-info">
+								<a href="#"><i class="fa fa-facebook"></i></a>
+								<a href="#"><i class="fa fa-twitter"></i></a>
+								<a href="#"><i class="fa fa-linkedin"></i></a>
+							</div>
+						</div>
+						<!-- Team Details-->
+						<div class="single_advisor_details_info">
+							<h4 class="media-heading"><a th:href="@{/visit(param=${contact.id})}" style="color: black;"><b th:text="${contact.name}"></b></a></h4>
+							<p><i class="fa fa-mars-stroke"></i> <span th:text="${contact.gender}"></span></p>
+							<p><i class="fa fa-mobile"></i> <span th:text="${contact.phone}"></span></p>
+							<p><i class="fa fa-envelope-o"></i> <span th:text="${contact.email}"></span></p>
+							<div class="med">
+								<a id="media2" th:href="@{/updateContact(param=${contact.id})}" type="button" class="btn button1" style="color:white; margin-top: 4px;">Update</a>
+								<a id="media2" th:href="@{/deleteContact(param=${contact.id})}" onclick="return confirm('Are you sure you want to delete this item?');" type="button" class="btn button2" style="color: white; margin-top: 4px;">Delete</a>
+								<a id="media3" th:href="@{/contacts}" onclick="return confirm('Yes, I want to generate code qr');" type="button" class="btn button2" style="color: white; margin-top: 4px;">Generate code Qr</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="pull-right">
+			<ul class="pagination pagination-split pagination-sm pagination-contact">
+				<li th:if="${currentPage != 0}"><a th:href="@{/home(page=${currentPage - 1})}"><i class="fa fa-angle-left"></i></a></li>
+				<li th:classappend="${currentPage == i-1 ? 'active' : ''}" th:each="i : ${#numbers.sequence(1, totalPages)}"><a th:href="@{/home(page=${i-1})}"><span th:text="${i}"></span></a></li>
+				<li th:if="${currentPage + 1 != totalPages}"><a th:href="@{/home(page=${currentPage + 1})}"><i class="fa fa-angle-right"></i></a></li>
+			</ul>
+		</div>
+	</div>
+</body>
+</html>

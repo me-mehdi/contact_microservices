@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<link rel="stylesheet" href="css/home.css">
+	<link rel="stylesheet" href="css/footer2.css">
+	<meta charset="ISO-8859-1">
+	<title>Profile</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <link href="https://netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+        
+		<style>
+		.map-section {
+		  position: fixed;
+		  top: 50%;
+		  left: 50%;
+		  transform: translate(-50%, -50%);
+		  background-color: white;
+		  padding: 20px;
+		  border: 1px solid black;
+		  display: none; /* Initially hide the section */
+		}
+
+
+.wrapper{ 
+    position:fixed;
+    bottom:20px;
+    right:20px;
+    z-index:1000;
+}
+
+.wrapper a:nth-child(1){
+    background-color:green;
+}
+
+.wrapper a:nth-child(2){
+    background-color:blue;
+}
+  
+.wrapper a:nth-child(3){
+    
+    animation: 0.7s ease-out 0s 1 FadeIn;
+    transition:all 0.3s;
+}
+
+
+.wrapper a:hover:nth-child(3){
+    
+    background-color:red;
+}
+ 
+ 
+@keyframes FadeIn {
+    0% {
+     transform:rotate(0deg);
+    }
+    100% {
+      transform:rotate(360deg); 
+    }
+}
+
+
+.hide{
+    position:absolute;
+    bottom:0px !important;
+    z-index:-1;
+    transition:all 2s;
+    
+}
+
+.social{
+    
+}
+
+.wrapper a{ 
+    height:40px;
+    width:40px;
+    background:#000;
+    padding:10px;
+    display:flex;
+    flex-direction:row;
+    border-radius:50%;
+    justify-content:center;
+    align-items:center; 
+    text-decoration:none;
+    color:#fff;
+    margin:2px;
+}
+	</style>
+</head>
+<body onload="initMap() "style="background-color: #ececec;">
+<nav class="navbar navbar-static-top navbar-inverse bg-inverse  navbar-fixed-top" style="background-color: black;">
+		<div class="navbar-header">
+			<button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".navbarSupportedContent">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+		</div>
+		<div class="collapse navbar-collapse navbarSupportedContent">
+			
+			<ul class="nav navbar-nav navbar-right">
+    <li class="nav-item">
+        <a class="nav-link" th:href="@{/fav}" style="font-size: 16px;">Favourite</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" th:href="@{/addContact}" style="font-size: 16px;">Add Contact</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" th:href="@{/home}" style="font-size: 16px;">All Contacts</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" th:href="@{/profile}" style="font-size: 16px;">My Profile</a>
+    </li>
+	<li class="nav-item">
+		<a class="nav-link" th:href="@{'http://localhost:8082/?userId=' + ${id}}" style="font-size: 16px;">Calendrier</a>
+	</li>
+    <li class="nav-item">
+        <a class="nav-link" th:href="@{/logout}" style="font-size: 16px;">Logout</a>
+    </li>
+</ul>
+
+		</div>
+	</nav>
+
+					<div class="col-md-12"style="padding-left: 210px;padding-right: 210px;">
+						
+						<br><br><br>
+						<div class="row">
+							<div class="col-md-6">
+								<h3>Update Profile</h3>
+							</div>
+							
+						</div>
+						
+						<div class="list-group contact-group">
+						
+						
+						
+						<form th:action="@{/updateProfile}" th:object="${profile}" method="post" enctype="multipart/form-data">
+		                    <div class="form-row">
+		                    	
+		                    	
+		                    
+		                    	<input type="hidden" name="id" th:field="*{id}" th:value="*{id}">
+		
+								<div class="col-md-5 mb-4">		                   			                    	
+									<img class="avatar" alt="Avatar" th:src="@{'data:image/jpg;base64,'+ ${imgUtil}}"> 
+									<!-- <img class="img-circle" src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="..."> -->																
+								</div>
+								
+								<div class="col-md-4 mb-4">
+									<label style="margin-top: 0.5em;">First Name: </label><br>
+									<input style="margin-top: 0.2em; margin-bottom: 0.5em;" type="text" name='fName' th:field="*{fName}" class="form-control" th:value="${profile.fName}" 
+									required>
+								</div>
+								
+								<div class="col-md-4 mb-4">
+									<label style="margin-top: 0.5em;">Last Name: </label><br>
+									<input style="margin-top: 0.2em; margin-bottom: 0.5em;" type="text" name='lName' th:field="*{lName}" class="form-control" th:value="${profile.lName}" 
+									required>
+								</div>
+		
+								<div class="col-md-4 mb-3">
+		                            <label style="margin-top: 0.5em;" for="validationCustom01">Username: </label>
+		                            <input style="margin-top: 0.2em; margin-bottom: 0.5em;" type="text" name='username' th:field="*{username}" class="form-control" id="validationCustom01" th:value="${profile.username}"
+		                                 required>
+		                        </div>
+		                        <div class="col-md-4 mb-3">
+		                            <label style="margin-top: 0.5em;" for="validationCustom01">Email: </label>
+		                            <input style="margin-top: 0.2em; margin-bottom: 0.5em;" type="email" name='email' th:field="*{email}" class="form-control" id="validationCustom01" th:value="${profile.email}"
+		                                 required>
+		                        </div>
+		                        <div class="col-md-4 mb-3">
+		                            <label style="margin-top: 0.5em;" for="validationCustom01">Password: </label>
+		                            <input style="margin-top: 0.2em; margin-bottom: 0.5em;" type="text" name='password' th:field="*{password}" class="form-control" id="validationCustom01" th:value="${profile.password}"
+		                                 required>
+		                        </div>
+		                        <div class="col-md-4 mb-3">
+		                            <label style="margin-top: 0.5em;" for="validationCustom02">Phone:</label>
+		                            <input style="margin-top: 0.2em; margin-bottom: 0.5em;" type="tel" name='phone' th:field="*{phone}" class="form-control" id="validationCustom02" th:value="${profile.phone}"
+		                                 required>
+		                        </div>
+		                        <div class="col-md-4 mb-3">
+		                            <label style="margin-top: 0.5em;" for="validationCustom03">Cover pic:</label>
+		                            <input style="margin-top: 0.2em; margin-bottom: 0.5em;" type="file" name='image12' class="form-control" accept="image/png, image/jpeg, image/jpg" id="validationCustom03" th:value="${profile.image}" >
+		                        </div>		                        
+		                        
+		                        <div class="col-md-10 mb-3">
+		                            <label style="margin-top: 0.5em;" for="validationCustom02">Address:</label>
+		                            <textarea inputmode="text" style="margin-top: 0.2em; margin-bottom: 0.5em;" class="form-control" name='address' th:value="${profile.address}" th:field="*{address}" id="address" rows="3"></textarea>
+		                        	<button class="map-button" onclick="showMap(this)">Show Map</button>
+		                        </div>
+		                        
+		
+				                   
+		                        <div id="map" class="map-section" style="height: 400px; width: 100%;">
+									
+								</div>
+		                    	
+        					
+        						<div class='col-md-10 mb-3'><br><br>
+                    				<button style="margin-top: 0.5em; margin-bottom: 0.5em; color: white;" type="submit" name="submit" class="btn btn-lg button1">Submit</button>
+                    				                    				<a th:href="@{/users}" onclick="return confirm('Yes i wat to generate code qr');" type="button" class="btn btn-lg button2" style="color: white; margin-top: 0.5em; margin-bottom: 0.5em;">Generate code Qr</a>
+
+                    				<!-- <a th:href="@{/deleteProfile(param=${profile.id})}" onclick="return confirm('Are you sure you want to delete this item?');" type="button" class="btn btn-lg button2" style="color: white; margin-top: 0.5em; margin-bottom: 0.5em;">Delete Account</a>-->
+                    				<br><br><br><br><br>
+								</div>
+		                        
+		                         <div class="m-b-25">
+		                            <label style="margin-top: 0.5em;" for="validationCustom02"> &emsp;&emsp;   Code QR:</label>
+		                            
+                                        <img th:src="@{${'/imgu/' + profile.id + '.png'}}" class="img-radius" alt="Avatar" style="width: 204px">
+                                 </div>
+		                        
+		                    </div>
+                    
+		                    
+                		</form>
+					
+									<div class="wrapper">
+    <a class="social" onclick="shareOnWhatsApp()"><i class="fa fa-whatsapp"></i></a>
+    <a class="social" onclick="shareOnFacebook()"><i class="fa fa-facebook"></i></a>
+    <a class="social" onclick="shareOnInstagram()"><i class="fa fa-instagram"></i></a>
+    <a class="social" onclick="sendEmail()"><i class="fa fa-envelope"></i></a>
+    <a class="close-button" href="#"> <i class="fa fa-close"></i></a>
+</div>															
+						</div>
+						
+					</div>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+	
+	
+	<!------ Include the above in your HEAD tag ---------->
+
+	<!-- Footer -->
+	
+	<!-- ./Footer -->
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAcYooCcItlgWmwzM0X_isXdFWSc_QjgNw"></script>
+	
+	 
+	
+	  <script>
+    var map;
+    var geocoder;
+    var marker;
+    
+  		var mapSection = document.getElementById('map');
+  		
+    function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: {lat: 31.6295, lng: -7.9811},
+            zoom: 14
+        });
+        geocoder = new google.maps.Geocoder();
+
+        // Get the initial address from the database
+        var address = document.getElementById('address').value;
+
+        // Geocode the address to get the latitude and longitude
+        geocoder.geocode({'address': address}, function(results, status) {
+            if (status === 'OK') {
+                var location = results[0].geometry.location;
+                // Set the center of the map to the location
+                map.setCenter(location);
+                // Place a marker on the location
+                placeMarker(location);
+            } else {
+                window.alert('Geocode was not successful for the following reason: ' + status);
+            }
+        });
+        
+        map.addListener('click', function(event) {
+            placeMarker(event.latLng);
+        });
+        
+        // Listen for changes to the address input
+        var addressInput = document.getElementById('address');
+        addressInput.addEventListener('input', function() {
+            var newAddress = addressInput.value;
+            geocoder.geocode({'address': newAddress}, function(results, status) {
+                if (status === 'OK') {
+                    var location = results[0].geometry.location;
+                    // Set the center of the map to the location
+                    map.setCenter(location);
+                    // Place a marker on the location
+                    placeMarker(location);
+                } else {
+                    window.alert('Geocode was not successful for the following reason: ' + status);
+                }
+            });
+        });
+    }
+    
+    function placeMarker(location) {
+        if (marker) {
+            marker.setPosition(location);
+	
+  mapSection.style.display = 'none';
+        } else {
+            marker = new google.maps.Marker({
+                position: location,
+                map: map
+            });
+        }
+        
+        geocoder.geocode({'location': location}, function(results, status) {
+            if (status === 'OK') {
+                if (results[0]) {
+                    document.getElementById('address').value = results[0].formatted_address;
+                } else {
+                    window.alert('No results found');
+                }
+            } else {
+                window.alert('Geocoder failed due to: ' + status);
+            }
+        });
+    }
+    function showMap(button) {
+event.preventDefault();
+  // Show the QR code section
+  mapSection.style.display = 'block';
+}
+
+
+
+function openWhatsAppWeb() {
+  var whatsAppWebURL = 'https://web.whatsapp.com/';
+  window.open(whatsAppWebURL, '_blank');
+}
+
+function shareOnWhatsApp() {
+  // Get the QR code image URL
+  const qrCodeImageURL = document.querySelector('.img-radius').src;
+
+  // Create a WhatsApp share URL
+  const shareURL = `whatsapp://send?text=Check out this QR code! ${encodeURIComponent(qrCodeImageURL)}`;
+
+  // Check if WhatsApp Web is supported by the browser and open it
+  if (navigator.userAgent.toLowerCase().indexOf('whatsapp/') > -1) {
+    openWhatsAppWeb();
+  } else {
+    // Open WhatsApp with the share URL
+    window.open(shareURL);
+  }
+}
+
+
+function shareOnFacebook() {
+    // Get the QR code image URL
+    const qrCodeImageURL = document.querySelector('.img-radius').src;
+
+    // Replace the URL and message with your desired values
+    const url = qrCodeImageURL;
+    const message = "Check out this awesome link!";
+    
+    // Open a new window or redirect to the Facebook sharing page
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodeURIComponent(message)}`, "_blank");
+}
+
+function shareOnInstagram() {
+    // Get the QR code image URL
+    const qrCodeImageURL = document.querySelector('.img-radius').src;
+
+    // Replace the URL and message with your desired values
+    const url = qrCodeImageURL;
+    const message = "Check out this awesome link!";
+    
+    // Open a new window or redirect to the Instagram sharing page
+    window.open(`https://www.instagram.com/?url=${encodeURIComponent(url)}&title=${encodeURIComponent(message)}`, "_blank");
+}
+
+function openGmail() {
+  var gmailURL = 'https://mail.google.com/mail/?view=cm&fs=1&tf=1';
+  window.open(gmailURL, '_blank');
+}
+
+function sendEmail() {
+  // Get the QR code image URL
+  const qrCodeImageURL = document.querySelector('.img-radius').src;
+
+  // Replace the email address, subject, and body with your desired values
+  const emailAddress = "example@example.com";
+  const subject = "Check out this awesome link!";
+  const body = `Hey,\n\nI found this amazing link and thought you might be interested:\n\n${qrCodeImageURL}`;
+  
+  // Create a mailto link and open the user's email client
+  const mailtoLink = `mailto:${encodeURIComponent(emailAddress)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  // Check if Chrome is the browser and open Gmail directly
+  if (navigator.userAgent.indexOf("Chrome") != -1) {
+    openGmail();
+  } else {
+    window.location.href = mailtoLink;
+  }
+}
+
+
+  
+  
+  
+  var close_button = document.querySelector(".close-button");
+var social_buttons = document.querySelectorAll(".social");
+
+close_button.addEventListener('click',()=>{
+   social_buttons.forEach(function(buttons){
+       buttons.classList.toggle('hide');
+   });
+});
+
+</script>
+
+
+</body>
+</html>

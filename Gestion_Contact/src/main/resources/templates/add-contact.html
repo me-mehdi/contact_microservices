@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<link rel="stylesheet" href="css/home.css">
+	<link rel="stylesheet" href="css/footer2.css">
+	<meta charset="ISO-8859-1">
+	<title>Add Contact</title>
+
+    <title>Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <link href="https://netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+        
+	<style>
+		.map-section {
+		  position: fixed;
+		  top: 50%;
+		  left: 50%;
+		  transform: translate(-50%, -50%);
+		  background-color: white;
+		  padding: 20px;
+		  border: 1px solid black;
+		  display: none; /* Initially hide the section */
+		}
+		
+	</style>
+</head>
+
+<body onload="initMap()" style="background-color: #ececec;">
+
+<nav class="navbar navbar-static-top navbar-inverse bg-inverse" style="background-color: black;">
+		<div class="navbar-header">
+			<button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".navbarSupportedContent">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+		</div>
+		<div class="collapse navbar-collapse navbarSupportedContent">
+			<ul class="nav navbar-nav">
+				<li class="navbar-form">
+					
+				</li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+    <li class="nav-item">
+        <a class="nav-link" th:href="@{/fav}" style="font-size: 16px;">Favourite</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" th:href="@{/addContact}" style="font-size: 16px;">Add Contact</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" th:href="@{/home}" style="font-size: 16px;">All Contacts</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" th:href="@{/profile}" style="font-size: 16px;">My Profile</a>
+    </li>
+	<li class="nav-item">
+		<a class="nav-link" th:href="@{'http://localhost:8082/?userId=' + ${id}}" style="font-size: 16px;">Calendrier</a>
+	</li>
+    <li class="nav-item">
+        <a class="nav-link" th:href="@{/logout}" style="font-size: 16px;">Logout</a>
+    </li>
+</ul>
+
+		</div>
+	</nav>
+
+					</div>
+					<div class="col-md-12" style="padding-left: 210px;padding-right: 210px;">
+						
+						<br>
+						<div class="row">
+							<div class="col-md-6">
+								<h3>Add Contact</h3>
+							</div>
+							
+						</div>
+						
+						<div class="list-group contact-group">
+						
+						
+						<form th:action="@{/addContact}" th:object="${newContact}" method="post" enctype="multipart/form-data">
+		                    <div class="form-row">
+		
+								<div class="col-md-4 mb-4">
+									<label style="margin-top: 0.5em;">Name: </label><br>
+									<input style="margin-top: 0.2em; margin-bottom: 0.5em;" type="text" name='name' th:field="*{name}" class="form-control" placeholder="First name" 
+									required>
+								</div>
+		
+								<div class="col-md-4 mb-3">
+		                            <label style="margin-top: 0.5em;" for="validationCustom01">Gender: </label>
+		                            <input style="margin-top: 0.2em; margin-bottom: 0.5em;" type="text" name='gender' th:field="*{gender}" class="form-control" id="validationCustom01" placeholder="Gender"
+		                                 required>
+		                        </div>
+		                        <div class="col-md-4 mb-3">
+		                            <label style="margin-top: 0.5em;" for="validationCustom01">Email: </label>
+		                            <input style="margin-top: 0.2em; margin-bottom: 0.5em;" type="email" name='email' th:field="*{email}" class="form-control" id="validationCustom01" placeholder="Email"
+		                                 required>
+		                        </div>
+		                        <div class="col-md-4 mb-3">
+		                            <label style="margin-top: 0.5em;" for="validationCustom01">Position: </label>
+		                            <input style="margin-top: 0.2em; margin-bottom: 0.5em;" type="text" name='position' th:field="*{position}" class="form-control" id="validationCustom01" placeholder="Position"
+		                                 required>
+		                        </div>
+		                        <div class="col-md-4 mb-3">
+		                            <label style="margin-top: 0.5em;" for="validationCustom02">Phone:</label>
+		                            <input style="margin-top: 0.2em; margin-bottom: 0.5em;" type="tel" name='phone' th:field="*{phone}" class="form-control" id="validationCustom02" placeholder="Phone"
+		                                 required>
+		                        </div>
+		                        <div class="col-md-4 mb-3">
+		                            <label style="margin-top: 0.5em;" for="validationCustom03">Cover pic:</label>
+		                            <input style="margin-top: 0.2em; margin-bottom: 0.5em; " type="file" name='image12' class="form-control" accept="image/png, image/jpeg, image/jpg" id="validationCustom03" placeholder="Cover image" >
+		                        </div>
+		                        
+		                        <div class="col-md-4 mb-3">
+		                        	<label style="margin-top: 0.5em;" class="form-check-label" for="flexCheckChecked">Favourite:</label>
+									<input style="margin-top: 0.2em; margin-bottom: 0.5em;" class="form-check-input" name="favourite" th:field="*{favourite}" type="checkbox" value="1" id="flexCheckChecked" checked>
+									
+								</div>
+		                        
+		                        <div class="col-md-10 mb-3">
+		                            <label style="margin-top: 0.5em;" for="validationCustom02">Address:</label>
+		                            <textarea inputmode="text" style="margin-top: 0.2em; margin-bottom: 0.5em;" class="form-control" name='address' th:field="*{address}" id="exampleFormControlTextarea1" rows="3"></textarea>
+		                        	<button class="map-button" onclick="showMap(this)">Show Map</button>
+
+		                        </div>
+		                        
+		                        <div id="map" class="map-section" style="height: 400px; width: 100%;">
+									
+								</div>
+		
+		
+
+        					
+        						<div class='col-md-10 mb-3'><br><br>
+                    				<button style="margin-top: 0.5em; margin-bottom: 0.5em; color: white;" type="submit" name="submit" class="btn btn-lg button1">Submit</button><br><br><br><br><br>
+								</div>
+		                        
+		                        
+		                        
+		                    </div>
+                    
+		                    
+                		</form>
+						
+						
+												
+							
+																								
+						</div>
+						
+					</div>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+	
+	
+	<!------ Include the above in your HEAD tag ---------->
+	
+	<!-- Footer -->
+
+	<!-- ./Footer -->
+	
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAcYooCcItlgWmwzM0X_isXdFWSc_QjgNw"></script>
+	
+	 
+	
+	  <script>
+	
+	    var map;
+	
+	    var geocoder;
+	
+	    var marker;
+	
+  		var mapSection = document.getElementById('map');
+	    
+	
+	    function initMap() {
+	
+	      map = new google.maps.Map(document.getElementById('map'), {
+	
+	        center: {lat: 31.6295, lng: -7.9811},
+	
+	        zoom: 12
+	
+	      });
+	
+	      geocoder = new google.maps.Geocoder();
+	
+	      
+	
+	      map.addListener('click', function(event) {
+	
+	        placeMarker(event.latLng);
+	
+	      });
+	
+	
+	
+	    }
+	
+	    
+	
+	    function placeMarker(location) {
+	
+	      if (marker) {
+	
+	        marker.setPosition(location);
+	
+  mapSection.style.display = 'none';
+	
+	      } else {
+	
+	        marker = new google.maps.Marker({
+	
+	          position: location,
+	
+	          map: map
+	
+	        });
+	
+	      }
+	
+	      
+	
+	      geocoder.geocode({'location': location}, function(results, status) {
+	
+	        if (status === 'OK') {
+	
+	          if (results[0]) {
+	
+	            document.getElementById('exampleFormControlTextarea1').value = results[0].formatted_address;
+	
+	          } else {
+	
+	            window.alert('No results found');
+	
+	          }
+	
+	        } else {
+	
+	          window.alert('Geocoder failed due to: ' + status);
+	
+	        }
+	
+	      });
+	
+	    }
+	
+	function showMap(button) {
+event.preventDefault();
+  // Show the QR code section
+  mapSection.style.display = 'block';
+}
+
+	
+	  </script>
+</body>
+</html>
